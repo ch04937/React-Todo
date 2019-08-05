@@ -3,6 +3,7 @@ import ReactDom from 'react-dom';
 import TodoForm from './components/TodoComponents/TodoForm'
 import TodoList from './components/TodoComponents/TodoList';
 
+
 const todoData = [
   {
     item: 'Learn setState',
@@ -24,7 +25,7 @@ class App extends React.Component {
     super();
     this.state = {
       item: 'Todo List: MVP',
-      todo: todoData
+      todo: todoData,
     };
   }
   toggleItem = id => {
@@ -52,11 +53,11 @@ class App extends React.Component {
       todo: [...this.state.todo, newItem]
     });
   };
-  clearPurchased = () => {
-    this.setState({
-      todo: this.state.todo.filter(item => !item.completed)
-    });
-  };
+  removeItem(id) {
+    this.setState((prevState) => ({
+      todo: prevState.todo.filter(item.id !==id),
+    }))
+  }
   render() {
     return (
       <div>
@@ -65,8 +66,10 @@ class App extends React.Component {
         <TodoForm addItem={this.addItem} />
         <TodoList
             todo={this.state.todo}
-            toggleItem={this.toggleItem}
+            toggleItem={this.state.toggleItem}
+            removeItem={this.state.removeItem}
             />
+            
  
 
       </div>
