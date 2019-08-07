@@ -1,17 +1,16 @@
 import React from 'react';
-import ReactDom from 'react-dom';
 import TodoForm from './components/TodoComponents/TodoForm'
 import TodoList from './components/TodoComponents/TodoList';
 
 
 const todoData = [
   {
-    item: 'Learn setState',
+    task: 'Learn setState',
     id: 1,
     completed: false
   }, 
   {
-    item: 'Style my Todo List',
+    task: 'Style my Todo List',
     id: 2,
     completed: false
   }
@@ -25,49 +24,53 @@ class App extends React.Component {
     super();
     this.state = {
       item: 'Todo List: MVP',
-      todo: todoData,
+      todos: todoData,
+
     };
   }
-  toggleItem = id => {
-    console.log(id);
+  
+  
+  filterCompleted = (e) => {
     this.setState({
-      todo: this.state.todo.map(item => {
-        if (item.id === id) {
+    todos: this.state.todos.filter(todo => !todo.completed)
+  });
+  }
+
+  toggleCompleted = (id) => {
+    this.setState({
+      todos: this.state.todos.map(todo => {
+        if (id === todo.id) {
           return {
-            ...item,
-            completed: !item.completed
+            ...todo, completed: !todo.completed
           };
         } else {
-          return item;
+          return todo;
         }
       })
     });
-  };
-  addItem = itemName => {
-    const newItem = {
-      item: itemName, 
-      id: Date.now(),
-      completed: false
-    };
+  }
+
+  addTodo = task => {
     this.setState({
-      todo: [...this.state.todo, newItem]
+      todos: [...this.state.todos, {
+        task: task,
+        id: Date.now(),
+        completed: false
+      }]
     });
   };
-  removeItem(id) {
-    this.setState((prevState) => ({
-      todo: prevState.todo.filter(item.id !==id),
-    }))
-  }
-  render() {
+  render() {  
+    console.log(this.state);
     return (
       <div>
         <h2>Welcome to your Todo App!</h2>
-        <p>{this.state.item}</p>
-        <TodoForm addItem={this.addItem} />
         <TodoList
-            todo={this.state.todo}
-            toggleItem={this.state.toggleItem}
-            removeItem={this.state.removeItem}
+            todos={this.state.todos}
+            toggleCompleted={this.toggleCompleted}
+            />
+        <TodoForm 
+            addTodo={this.addTodo} 
+            filterTodos={ this.filterCompleted }
             />
             
  
